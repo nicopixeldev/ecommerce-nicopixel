@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
 
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
@@ -54,6 +54,10 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
+
+  // We use two separate useEffect hooks because they update different parts of the state:
+  // One updates cartCount (total item quantity), and the other updates cartTotal (total price).
+  // Keeping them separate ensures clarity, avoids unnecessary re-renders, and improves maintainability.
 
   useEffect(() => {
     const newCartCount = cartItems.reduce(
