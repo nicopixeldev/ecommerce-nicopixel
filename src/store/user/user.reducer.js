@@ -1,25 +1,25 @@
-import { USER_ACTION_TYPES } from "./user.types";
+import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
   currentUser: null,
-  // isLoading is needed because we are fetching
-  isLoading: false,
-  error: null,
+  test: { a: 1 },
 };
 
-export const userReducer = (state = INITIAL_STATE, action) => {
-  const { type, payload } = action;
+// generates a slice which replaces types, actions, and reducers
+export const userSlice = createSlice({
+  name: "user",
+  initialState: INITIAL_STATE,
+  reducers: {
+    setCurrentUser(state, action) {
+      // state is immutable - redux toolkit does this for us
+      // using a library called immer behind the scenes
+      state.currentUser = action.payload;
+    },
+  },
+});
 
-  switch (type) {
-    case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
-      return { ...state, currentUser: payload };
-    case USER_ACTION_TYPES.SIGN_OUT_SUCCESS:
-      return { ...state, currentUser: null };
-    case USER_ACTION_TYPES.SIGN_OUT_FAILED:
-    case USER_ACTION_TYPES.SIGN_IN_FAILED:
-    case USER_ACTION_TYPES.SIGN_UP_FAILED:
-      return { ...state, error: payload };
-    default:
-      return state;
-  }
-};
+// generates actions
+export const { setCurrentUser } = userSlice.actions;
+
+// generates a reducer
+export const userReducer = userSlice.reducer;
